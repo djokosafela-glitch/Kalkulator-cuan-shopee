@@ -24,7 +24,7 @@ html_code = """
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         :root { --shopee-orange: #EE4D2D; --bg: #f4f4f7; --success: #26aa99; --danger: #e74c3c; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; margin: 0; }
-        .card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; margin-top: 10px; }
+        .card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 30px; }
         .header { background: linear-gradient(135deg, #f53d2d, #ff6433); color: white; padding: 25px 20px; text-align: center; }
         .content { padding: 20px; }
         .grid-input { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -37,7 +37,8 @@ html_code = """
         .suggested-price { display: block; font-size: 32px; font-weight: 800; color: var(--success); }
         .fee-breakdown { font-size: 12px; background: #fafafa; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 25px; }
         .fee-row { display: flex; justify-content: space-between; margin-bottom: 6px; color: #666; }
-        .strategy-card { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--shopee-orange); padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
+        .strategy-section-label { margin-top: 20px; margin-bottom: 10px; display: block; font-size: 11px; font-weight: 800; color: var(--shopee-orange); }
+        .strategy-card { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--shopee-orange); padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .strategy-card strong { color: var(--shopee-orange); display: block; margin-bottom: 4px; font-size: 14px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -93,6 +94,7 @@ html_code = """
                     <span>Profit Bersih:</span> <span id="resCuan"></span>
                 </div>
             </div>
+            <span class="strategy-section-label">5 STRATEGI PROMOSI UNTUK ANDA:</span>
             <div id="strategyContainer"></div>
         </div>
     </div>
@@ -124,13 +126,18 @@ html_code = """
         const potonganVoucher = hargaJual * rateVoucher;
         const cuanBersih = hargaJual - potonganFee - potonganVoucher - biayaProses - hpp;
         document.getElementById('resultArea').style.display = 'block';
+        document.getElementById('labelHarga').innerText = "Harga Jual untuk Profit " + (targetProfitPersen*100) + "%";
         document.getElementById('resHargaJual').innerText = "Rp " + hargaJual.toLocaleString('id-ID');
         document.getElementById('resFeePersen').innerText = "-Rp " + Math.round(potonganFee).toLocaleString('id-ID');
         document.getElementById('resVoucherValue').innerText = "-Rp " + Math.round(potonganVoucher).toLocaleString('id-ID');
         document.getElementById('resCuan').innerText = "Rp " + Math.round(cuanBersih).toLocaleString('id-ID');
+        
         const strategies = [
-            { t: "1. Psikologi Harga Coret", d: "Naikkan harga 25% lalu beri diskon toko agar pembeli merasa untung." },
-            { t: "2. Strategi Profit", d: "Margin Anda terjaga aman di angka " + (targetProfitPersen*100) + "%." }
+            { t: "1. Fokus SEO & Organik", d: "Gunakan harga ini sebagai harga inti tanpa diskon tambahan agar margin tetap terjaga." },
+            { t: "2. Strategi Voucher", d: "Karena budget voucher sudah masuk harga jual, publikasikan voucher ini agar menarik pembeli." },
+            { t: "3. Kombo Hemat (Grosir)", d: "Berikan diskon 1% untuk pembelian 2 pcs. Karena biaya proses Rp1.250 bersifat tetap, profit Anda naik jika beli banyak." },
+            { t: "4. Voucher Ikuti Toko", d: "Gunakan nilai Rp2.000 sebagai magnet follower untuk trafik jangka panjang." },
+            { t: "5. Psikologi Harga Coret", d: "Upload produk dengan harga Rp " + Math.round(hargaJual * 1.25 / 100)*100 + " lalu coret menjadi harga hasil hitungan ini." }
         ];
         let html = "";
         strategies.forEach(s => { html += `<div class="strategy-card"><strong>${s.t}</strong>${s.d}</div>`; });
@@ -141,5 +148,5 @@ html_code = """
 </html>
 """
 
-# 3. Jalankan HTML di Streamlit dengan tinggi yang cukup agar tidak terpotong
-components.html(html_code, height=1000, scrolling=True)
+# 3. Jalankan dengan tinggi yang lebih besar agar 5 strategi terlihat semua
+components.html(html_code, height=1300, scrolling=True)
