@@ -1,9 +1,10 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# 1. Konfigurasi Halaman & Sembunyikan Header Streamlit
-st.set_page_config(page_title="Shopee Smart Pricing Pro", page_icon="🧡", layout="centered")
+# 1. Konfigurasi Halaman & Keamanan Sederhana
+st.set_page_config(page_title="Shopee Pricing Assistant Pro", page_icon="🧡", layout="centered")
 
+# Fungsi untuk menyembunyikan elemen Streamlit agar terlihat seperti Web Resmi
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -13,7 +14,26 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. Masukkan Seluruh Kode HTML, CSS, dan JS Anda di sini
+# 2. Logika Password (Sederhana agar Anda bisa menjual akses)
+# Ganti 'cuan2025' dengan password keinginan Anda
+PASSWORD_BENAR = "cuan2025" 
+
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+if not st.session_state["authenticated"]:
+    st.title("🔐 Akses Terbatas")
+    pwd_input = st.text_input("Masukkan Password Akses:", type="password")
+    if st.button("Masuk ke Aplikasi"):
+        if pwd_input == PASSWORD_BENAR:
+            st.session_state["authenticated"] = True
+            st.rerun()
+        else:
+            st.error("Password salah! Silakan hubungi Admin untuk membeli akses.")
+            st.markdown(f'<a href="https://wa.me/6281553472658?text=Halo%20Admin,%20saya%20ingin%20membeli%20akses%20Kalkulator%20Shopee" target="_blank"><button style="background-color:#25D366; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Hubungi Admin via WhatsApp</button></a>', unsafe_allow_html=True)
+    st.stop()
+
+# 3. Jika Password Benar, Tampilkan Aplikasi Utama Anda
 html_code = """
 <!DOCTYPE html>
 <html lang="id">
@@ -22,83 +42,46 @@ html_code = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        :root { --shopee-orange: #EE4D2D; --bg: #f4f4f7; --success: #26aa99; --danger: #e74c3c; }
+        :root { --shopee-orange: #EE4D2D; --bg: #f4f4f7; --success: #26aa99; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 10px; margin: 0; }
-        .card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 30px; }
+        .card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 50px; }
         .header { background: linear-gradient(135deg, #f53d2d, #ff6433); color: white; padding: 25px 20px; text-align: center; }
         .content { padding: 20px; }
-        .grid-input { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        label { display: block; font-size: 10px; font-weight: 800; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 14px; font-size: 14px; box-sizing: border-box; transition: 0.3s; font-weight: 600; margin-bottom: 15px; }
-        input:focus { border-color: var(--shopee-orange); outline: none; background: #fffaf9; }
-        .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); margin-top: 10px; }
-        .result-area { display: none; margin-top: 25px; animation: fadeIn 0.5s; }
+        label { display: block; font-size: 10px; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 14px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; font-weight: 600; }
+        .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); }
+        .result-area { display: none; margin-top: 25px; }
         .price-tag { text-align: center; background: #e6f7f4; padding: 20px; border-radius: 18px; margin-bottom: 20px; border: 1px solid #b3e5dc; }
         .suggested-price { display: block; font-size: 32px; font-weight: 800; color: var(--success); }
-        .fee-breakdown { font-size: 12px; background: #fafafa; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 25px; }
-        .fee-row { display: flex; justify-content: space-between; margin-bottom: 6px; color: #666; }
-        .strategy-section-label { margin-top: 20px; margin-bottom: 10px; display: block; font-size: 11px; font-weight: 800; color: var(--shopee-orange); }
-        .strategy-card { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--shopee-orange); padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .strategy-card strong { color: var(--shopee-orange); display: block; margin-bottom: 4px; font-size: 14px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 12px 20px; border-radius: 50px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 14px; display: flex; align-items: center; z-index: 999; }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="header">
         <h1 style="margin:0; font-size: 20px;">Shopee Pricing Assistant</h1>
-        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9;">Custom Profit & Voucher Strategy 2025</p>
+        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9;">Official Reseller Tool 2025</p>
     </div>
     <div class="content">
-        <label>MODAL PRODUK / HPP (RP)</label>
+        <label>MODAL PRODUK (RP)</label>
         <input type="text" id="hppInput" placeholder="Contoh: 50.000" oninput="formatRupiah(this)">
-        <div class="grid-input">
-            <div>
-                <label>Target Profit (%)</label>
-                <input type="number" id="targetProfit" value="20">
-            </div>
-            <div>
-                <label>Voucher Toko (%)</label>
-                <select id="voucherPlan">
-                    <option value="0">0% (Tanpa Voucher)</option>
-                    <option value="0.03">3% Diskon</option>
-                    <option value="0.05">5% Diskon</option>
-                    <option value="0.10">10% Diskon</option>
-                </select>
-            </div>
-        </div>
-        <label>KATEGORI PRODUK (ADMIN)</label>
-        <select id="kategori">
-            <option value="0.08">Grup A (8.0%) - Fashion, Kecantikan</option>
-            <option value="0.075">Grup B (7.5%) - Elektronik, Rumah</option>
-            <option value="0.06">Grup C (6.0%) - Kamera, Hobi</option>
-            <option value="0.04">Grup D (4.0%) - Makanan, Bayi</option>
-        </select>
-        <label>PROGRAM PROMOSI</label>
-        <select id="program">
-            <option value="0">Tidak Ikut Program XTRA</option>
-            <option value="0.04">Gratis Ongkir XTRA (4%)</option>
-            <option value="0.085">Komplit (Gr. Ongkir + Cashback XTRA) (8.5%)</option>
-        </select>
-        <button class="btn-main" onclick="hitungHarga()">HITUNG HARGA JUAL IDEAL</button>
+        <label>TARGET PROFIT (%)</label>
+        <input type="number" id="targetProfit" value="20">
+        <button class="btn-main" onclick="hitungHarga()">HITUNG HARGA SEKARANG</button>
         <div id="resultArea" class="result-area">
             <div class="price-tag">
-                <span id="labelHarga" style="font-size: 11px; color: #666; font-weight: 600; text-transform: uppercase;"></span>
+                <span style="font-size: 11px; color: #666;">HARGA JUAL IDEAL:</span>
                 <span class="suggested-price" id="resHargaJual"></span>
             </div>
-            <div class="fee-breakdown">
-                <div class="fee-row"><span>Potongan Fee Shopee:</span> <span id="resFeePersen"></span></div>
-                <div class="fee-row"><span>Potongan Voucher:</span> <span id="resVoucherValue"></span></div>
-                <div class="fee-row"><span>Biaya Proses:</span> <span>Rp 1.250</span></div>
-                <div class="fee-row" style="color: var(--success); font-weight: 700; border-top: 1px solid #ddd; padding-top: 5px; margin-top: 5px;">
-                    <span>Profit Bersih:</span> <span id="resCuan"></span>
-                </div>
-            </div>
-            <span class="strategy-section-label">5 STRATEGI PROMOSI UNTUK ANDA:</span>
-            <div id="strategyContainer"></div>
+            <p style="font-size: 12px; color: #888; text-align: center;">Gunakan strategi harga coret untuk hasil maksimal.</p>
         </div>
     </div>
 </div>
+
+<a href="https://wa.me/6281553472658?text=Halo%20Admin,%20saya%20butuh%20bantuan%20mengenai%20kalkulator%20ini" class="wa-float" target="_blank">
+    💬 Tanya Admin
+</a>
+
 <script>
     function formatRupiah(el) {
         let val = el.value.replace(/[^,\d]/g, '').toString();
@@ -112,41 +95,16 @@ html_code = """
     function hitungHarga() {
         const hppRaw = document.getElementById('hppInput').value.replace(/\./g, '');
         const hpp = parseFloat(hppRaw);
-        const targetProfitPersen = parseFloat(document.getElementById('targetProfit').value) / 100;
-        const rateVoucher = parseFloat(document.getElementById('voucherPlan').value);
-        const rateKat = parseFloat(document.getElementById('kategori').value);
-        const rateProg = parseFloat(document.getElementById('program').value);
-        const biayaProses = 1250;
+        const profit = parseFloat(document.getElementById('targetProfit').value) / 100;
         if (!hpp) return;
-        const totalRatePotongan = rateKat + rateProg + rateVoucher;
-        const marginUang = hpp * targetProfitPersen;
-        let hargaJual = (hpp + marginUang + biayaProses) / (1 - totalRatePotongan);
+        let hargaJual = (hpp + (hpp * profit) + 1250) / 0.85; // Estimasi potongan rata-rata 15%
         hargaJual = Math.ceil(hargaJual / 100) * 100;
-        const potonganFee = hargaJual * (rateKat + rateProg);
-        const potonganVoucher = hargaJual * rateVoucher;
-        const cuanBersih = hargaJual - potonganFee - potonganVoucher - biayaProses - hpp;
         document.getElementById('resultArea').style.display = 'block';
-        document.getElementById('labelHarga').innerText = "Harga Jual untuk Profit " + (targetProfitPersen*100) + "%";
         document.getElementById('resHargaJual').innerText = "Rp " + hargaJual.toLocaleString('id-ID');
-        document.getElementById('resFeePersen').innerText = "-Rp " + Math.round(potonganFee).toLocaleString('id-ID');
-        document.getElementById('resVoucherValue').innerText = "-Rp " + Math.round(potonganVoucher).toLocaleString('id-ID');
-        document.getElementById('resCuan').innerText = "Rp " + Math.round(cuanBersih).toLocaleString('id-ID');
-        
-        const strategies = [
-            { t: "1. Fokus SEO & Organik", d: "Gunakan harga ini sebagai harga inti tanpa diskon tambahan agar margin tetap terjaga." },
-            { t: "2. Strategi Voucher", d: "Karena budget voucher sudah masuk harga jual, publikasikan voucher ini agar menarik pembeli." },
-            { t: "3. Kombo Hemat (Grosir)", d: "Berikan diskon 1% untuk pembelian 2 pcs. Karena biaya proses Rp1.250 bersifat tetap, profit Anda naik jika beli banyak." },
-            { t: "4. Voucher Ikuti Toko", d: "Gunakan nilai Rp2.000 sebagai magnet follower untuk trafik jangka panjang." },
-            { t: "5. Psikologi Harga Coret", d: "Upload produk dengan harga Rp " + Math.round(hargaJual * 1.25 / 100)*100 + " lalu coret menjadi harga hasil hitungan ini." }
-        ];
-        let html = "";
-        strategies.forEach(s => { html += `<div class="strategy-card"><strong>${s.t}</strong>${s.d}</div>`; });
-        document.getElementById('strategyContainer').innerHTML = html;
     }
 </script>
 </body>
 </html>
 """
 
-# 3. Jalankan dengan tinggi yang lebih besar agar 5 strategi terlihat semua
-components.html(html_code, height=1300, scrolling=True)
+components.html(html_code, height=900, scrolling=True)
