@@ -1,135 +1,91 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# 1. Konfigurasi Halaman & Meta Data
+# 1. Konfigurasi Dasar
 st.set_page_config(page_title="Shopee Smart Pricing 2025", page_icon="🧡", layout="centered")
 
-# CSS UNTUK LOGIN GLASSMORPHISM & UI UTAMA
+# CSS UNTUK LOGIN & BACKGROUND
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Background Gradient Aesthetic */
+    /* Background Gradasi Oranye - Kuning */
     .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #FF9900 0%, #FF4D00 100%);
         background-size: cover;
     }
     
-    /* Container Login */
-    .login-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-top: 80px;
+    /* Login Box Solid & Center */
+    .login-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        text-align: center;
+        max-width: 400px;
+        margin: auto;
     }
 
-    /* Ikon Profil Bulat (Sesuai Referensi) */
-    .profile-circle {
-        width: 90px;
-        height: 90px;
-        background: #2d3436;
+    /* Ikon Profil Bulat Solid */
+    .user-icon {
+        width: 80px;
+        height: 80px;
+        background: #333;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: -45px;
-        z-index: 10;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        border: 4px solid rgba(255,255,255,0.1);
+        margin: -80px auto 20px auto;
+        border: 5px solid #FF9900;
     }
 
-    /* Kotak Login Glassmorphism */
-    .glass-box {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 35px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 60px 40px 40px 40px;
-        width: 100%;
-        max-width: 380px;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        text-align: center;
-    }
-
-    /* Input Styling agar Teks Terlihat */
-    div[data-baseweb="input"] {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-        border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-    }
-    
+    /* Input Password Hitam di Putih */
     div[data-baseweb="input"] input {
-        color: white !important;
-        font-weight: 600 !important;
-    }
-
-    /* Tombol Login Putih Elegan */
-    .stButton>button {
-        background: white !important;
-        color: #667eea !important;
-        border-radius: 12px !important;
-        font-weight: 800 !important;
-        border: none !important;
-        height: 50px;
-        transition: 0.3s ease;
+        color: #000 !important;
+        text-align: center;
+        font-size: 18px;
     }
     
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
     .login-title {
-        color: white;
         font-weight: 800;
-        font-size: 20px;
-        margin-bottom: 25px;
-        letter-spacing: 1px;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 22px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. Logika Authentikasi
+# 2. Logika Login
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 if not st.session_state["authenticated"]:
-    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
-    
-    # Elemen Ikon Profil
-    st.markdown('''
-        <div class="profile-circle">
-            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-        </div>
-    ''', unsafe_allow_html=True)
-
-    with st.container():
-        st.markdown('<div class="glass-box">', unsafe_allow_html=True)
+    st.write("##")
+    st.write("##")
+    col1, col2, col3 = st.columns([0.1, 0.8, 0.1])
+    with col2:
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<div class="user-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>', unsafe_allow_html=True)
         st.markdown('<div class="login-title">PRICING CALCULATOR</div>', unsafe_allow_html=True)
+        st.markdown('<p style="color:#666; font-size:14px; margin-bottom:20px;">Silakan masukkan kode akses untuk memulai analisa profit Anda.</p>', unsafe_allow_html=True)
         
-        pwd = st.text_input("", type="password", placeholder="Masukkan Password Akses")
+        pwd = st.text_input("", type="password", placeholder="PASSWORD")
         
-        if st.button("LOGIN TO DASHBOARD", use_container_width=True):
+        if st.button("LOGIN SEKARANG", use_container_width=True):
             if pwd == "cuan2025":
                 st.session_state["authenticated"] = True
                 st.rerun()
             else:
-                st.error("Password Salah!")
+                st.error("Akses Ditolak!")
         
-        st.markdown('<p style="font-size:12px; color:white; margin-top:20px; opacity:0.8;">"Makin tahu cuanmu, makin menyala peluang suksesmu!"</p>', unsafe_allow_html=True)
+        st.markdown('<p style="font-size:12px; color:#FF4D00; font-weight:bold; margin-top:20px;">"Makin tahu cuanmu, makin menyala peluang suksesmu!"</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
-# 3. DASHBOARD UTAMA (FULL HTML INTEGRATION)
-html_dashboard = """
+# 3. KODE DASHBOARD UTAMA (VERSI HTML LENGKAP)
+html_full = """
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -137,90 +93,86 @@ html_dashboard = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #f0f2f5; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #f53d2d, #ff6433); color: white; padding: 30px 20px; text-align: center; }
-        .content { padding: 25px; }
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        label { display: block; font-size: 11px; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        input, select { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 12px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box; font-weight: 600; }
-        .calculate-btn { width: 100%; background: #EE4D2D; color: white; border: none; padding: 18px; border-radius: 15px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(238, 77, 45, 0.2); }
-        .result-section { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
-        .price-tag { background: #e6f7f4; border: 1px solid #b3e5dc; border-radius: 20px; padding: 25px; text-align: center; margin-bottom: 20px; }
-        .price-text { display: block; font-size: 34px; font-weight: 800; color: #26aa99; }
-        .fee-breakdown { background: #fafafa; border-radius: 15px; padding: 20px; border: 1px solid #eee; margin-bottom: 25px; }
-        .fee-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; color: #555; }
-        .strategy-card { background: white; border-left: 5px solid #EE4D2D; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-size: 13px; }
-        .wa-button { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; gap: 10px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        body { font-family: 'Inter', sans-serif; background: #f4f4f7; padding: 15px; margin: 0; display: flex; justify-content: center; }
+        .card { background: white; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #FF9900, #FF4D00); color: white; padding: 25px; text-align: center; }
+        .content { padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; font-size: 10px; font-weight: 800; color: #999; margin-bottom: 6px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box; font-weight: 600; color: #333; }
+        .btn-calc { width: 100%; background: #FF4D00; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 77, 0, 0.3); }
+        
+        .result-area { display: none; margin-top: 25px; }
+        .price-box { background: #fff9f0; border: 1px solid #ffe8cc; border-radius: 15px; padding: 20px; text-align: center; margin-bottom: 15px; }
+        .price-val { font-size: 32px; font-weight: 800; color: #FF4D00; }
+        .detail-card { background: #fafafa; border-radius: 12px; padding: 15px; border: 1px solid #eee; margin-bottom: 20px; }
+        .detail-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+        .strat-box { background: white; border-left: 4px solid #FF9900; padding: 12px; border-radius: 8px; font-size: 12px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 999; }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="header">
-        <h2 style="margin:0; font-size: 22px;">Shopee Smart Pricing Pro</h2>
-        <p style="margin:5px 0 0; font-size: 12px; opacity: 0.8;">Admin, Affiliate & Tax Calculator 2025</p>
+        <h2 style="margin:0; font-size: 18px;">Shopee Pricing Assistant</h2>
+        <p style="margin:5px 0 0; font-size: 10px; opacity: 0.9;">Update Kebijakan & Biaya Admin 2025</p>
     </div>
     <div class="content">
         <label>Modal Produk / HPP (RP)</label>
-        <input type="text" id="hppInput" placeholder="Contoh: 100.000" oninput="formatRupiah(this)">
+        <input type="text" id="hpp" placeholder="Contoh: 50.000" oninput="formatRp(this)">
         
-        <div class="grid-inputs">
-            <div>
-                <label>Target Profit (%)</label>
-                <input type="number" id="profitInput" value="20">
-            </div>
-            <div>
-                <label>Affiliate (%)</label>
-                <input type="number" id="affiliateInput" value="5">
-            </div>
+        <div class="grid">
+            <div><label>Target Profit (%)</label><input type="number" id="profit" value="20"></div>
+            <div><label>Affiliate (%)</label><input type="number" id="aff" value="5"></div>
         </div>
 
-        <label>Voucher Toko & Kategori</label>
-        <div class="grid-inputs">
-            <select id="vchInput">
-                <option value="0">Voucher 0%</option>
-                <option value="0.05">Voucher 5%</option>
-                <option value="0.10">Voucher 10%</option>
-            </select>
-            <select id="katInput">
-                <option value="0.08">Grup A (8%)</option>
-                <option value="0.06">Grup C (6%)</option>
-                <option value="0.04">Grup D (4%)</option>
-            </select>
-        </div>
-
-        <label>Program Promosi Shopee</label>
-        <select id="progInput">
-            <option value="0.085">Gratis Ongkir + Cashback XTRA (8.5%)</option>
-            <option value="0.04">Gratis Ongkir XTRA (4%)</option>
-            <option value="0">Tidak Ikut Program</option>
+        <label>Rencana Voucher Toko</label>
+        <select id="vch">
+            <option value="0">Tanpa Voucher (0%)</option>
+            <option value="0.05">Voucher Diskon 5%</option>
+            <option value="0.10">Voucher Diskon 10%</option>
         </select>
 
-        <button class="calculate-btn" onclick="processData()">REKOMENDASIKAN HARGA</button>
+        <label>Kategori Produk</label>
+        <select id="kat">
+            <option value="0.08">Grup A (Fashion, Kecantikan - 8%)</option>
+            <option value="0.075">Grup B (Elektronik - 7.5%)</option>
+            <option value="0.06">Grup C (Hobi, Alat Musik - 6%)</option>
+            <option value="0.04">Grup D (FMCG, Makanan - 4%)</option>
+        </select>
 
-        <div id="resultArea" class="result-section">
-            <div class="price-tag">
-                <span style="font-size: 11px; font-weight: 800; color: #666;">HARGA JUAL IDEAL</span>
-                <span class="price-text" id="resPrice"></span>
+        <label>Program Promosi Shopee</label>
+        <select id="prog">
+            <option value="0.085">Gratis Ongkir XTRA + Cashback XTRA (8.5%)</option>
+            <option value="0.04">Hanya Gratis Ongkir XTRA (4%)</option>
+            <option value="0">Tidak Ikut Program (0%)</option>
+        </select>
+
+        <button class="btn-calc" onclick="hitung()">LIHAT REKOMENDASI HARGA</button>
+
+        <div id="result" class="result-area">
+            <div class="price-box">
+                <div style="font-size: 10px; font-weight: 700; color: #666; margin-bottom: 5px;">REKOMENDASI HARGA JUAL</div>
+                <div class="price-val" id="resPrice"></div>
             </div>
-            <div class="fee-breakdown">
-                <div class="fee-row"><span>Admin Shopee:</span> <span id="resAdmin"></span></div>
-                <div class="fee-row"><span>Affiliate (+PPN 11%):</span> <span id="resAff"></span></div>
-                <div class="fee-row"><span>Potongan Voucher:</span> <span id="resVch"></span></div>
-                <div class="fee-row" style="color:#26aa99; font-weight:800; border-top:1px solid #eee; padding-top:10px; margin-top:5px;">
-                    <span>Net Profit:</span> <span id="resCuan"></span>
+            <div class="detail-card">
+                <div class="detail-row"><span>Potongan Admin + XTRA:</span><span id="resAdmin"></span></div>
+                <div class="detail-row"><span>Biaya Affiliate (+PPN 11%):</span><span id="resAff"></span></div>
+                <div class="detail-row"><span>Alokasi Voucher Toko:</span><span id="resVch"></span></div>
+                <div class="detail-row"><span>Biaya Proses Fix:</span><span>-Rp 1.250</span></div>
+                <div class="detail-row" style="border-top: 1px solid #eee; padding-top: 8px; margin-top: 8px; font-weight: 800; color: #FF4D00;">
+                    <span>Profit Bersih Anda:</span><span id="resCuan"></span>
                 </div>
             </div>
-            <div id="stratContainer"></div>
+            <div id="stratList"></div>
         </div>
     </div>
 </div>
 
-<a href="https://wa.me/6281553472658" class="wa-button" target="_blank">💬 Chat Admin</a>
+<a href="https://wa.me/6281553472658" class="wa-float" target="_blank">💬 Chat Admin</a>
 
 <script>
-    function formatRupiah(el) {
+    function formatRp(el) {
         let val = el.value.replace(/[^,\d]/g, '').toString();
         let split = val.split(',');
         let sisa = split[0].length % 3;
@@ -230,35 +182,38 @@ html_dashboard = """
         el.value = rp;
     }
 
-    function processData() {
-        const hpp = parseFloat(document.getElementById('hppInput').value.replace(/\./g, ''));
+    function hitung() {
+        const hpp = parseFloat(document.getElementById('hpp').value.replace(/\./g, ''));
         if(!hpp) return;
+        const target = parseFloat(document.getElementById('profit').value) / 100;
+        const affRate = (parseFloat(document.getElementById('aff').value) / 100) * 1.11;
+        const vchRate = parseFloat(document.getElementById('vch').value);
+        const katRate = parseFloat(document.getElementById('kat').value);
+        const progRate = parseFloat(document.getElementById('prog').value);
         
-        const profit = parseFloat(document.getElementById('profitInput').value) / 100;
-        const affiliate = (parseFloat(document.getElementById('affiliateInput').value) / 100) * 1.11;
-        const voucher = parseFloat(document.getElementById('vchInput').value);
-        const kategori = parseFloat(document.getElementById('katInput').value);
-        const program = parseFloat(document.getElementById('progInput').value);
-        
-        const totalFeeRate = kategori + program + voucher + affiliate;
-        let jual = (hpp + (hpp * profit) + 1250) / (1 - totalFeeRate);
+        const totalPotongan = katRate + progRate + vchRate + affRate;
+        let jual = (hpp + (hpp * target) + 1250) / (1 - totalPotongan);
         jual = Math.ceil(jual / 100) * 100;
 
-        const adminNominal = jual * (kategori + program);
-        const affNominal = jual * affiliate;
-        const vchNominal = jual * voucher;
-        const finalCuan = jual - adminNominal - affNominal - vchNominal - 1250 - hpp;
+        const adminNominal = jual * (katRate + progRate);
+        const affNominal = jual * affRate;
+        const vchNominal = jual * vchRate;
+        const cuan = jual - adminNominal - affNominal - vchNominal - 1250 - hpp;
 
-        document.getElementById('resultArea').style.display = 'block';
+        document.getElementById('result').style.display = 'block';
         document.getElementById('resPrice').innerText = "Rp " + jual.toLocaleString('id-ID');
         document.getElementById('resAdmin').innerText = "-Rp " + Math.round(adminNominal).toLocaleString('id-ID');
         document.getElementById('resAff').innerText = "-Rp " + Math.round(affNominal).toLocaleString('id-ID');
         document.getElementById('resVch').innerText = "-Rp " + Math.round(vchNominal).toLocaleString('id-ID');
-        document.getElementById('resCuan').innerText = "Rp " + Math.round(finalCuan).toLocaleString('id-ID');
+        document.getElementById('resCuan').innerText = "Rp " + Math.round(cuan).toLocaleString('id-ID');
 
-        document.getElementById('stratContainer').innerHTML = `
-            <div class="strategy-card">🚀 <b>Push Affiliate:</b> Komisi aman, segera hubungi kreator!</div>
-            <div class="strat-item">📈 <b>Harga Coret:</b> Set di Rp ` + (Math.ceil(jual*1.3/100)*100).toLocaleString('id-ID') + `</div>
+        const coret = Math.ceil((jual * 1.3) / 100) * 100;
+        document.getElementById('stratList').innerHTML = `
+            <div class="strat-box">🚀 <b>Strategi Affiliate:</b> Berikan komisi ${document.getElementById('aff').value}% untuk menarik influencer.</div>
+            <div class="strat-box">🏷️ <b>Harga Coret:</b> Pasang harga Rp ${coret.toLocaleString('id-ID')} lalu coret ke harga rekomendasi.</div>
+            <div class="strat-box">📦 <b>Paket Hemat:</b> Jual bundle isi 2 untuk menghemat biaya fix Rp 1.250.</div>
+            <div class="strat-box">🎟️ <b>Voucher:</b> Aktifkan voucher toko saat ada event 2.2, 3.3 untuk naikkan konversi.</div>
+            <div class="strat-box">💡 <b>Optimasi:</b> Gunakan kata kunci SEO yang tepat di judul produk Anda.</div>
         `;
     }
 </script>
@@ -266,4 +221,4 @@ html_dashboard = """
 </html>
 """
 
-components.html(html_dashboard, height=1500, scrolling=True)
+components.html(html_full, height=1400, scrolling=True)
