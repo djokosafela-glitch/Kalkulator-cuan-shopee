@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. CSS Global untuk Streamlit UI (Fokus pada Poppins & Desain Profesional)
+# 2. CSS Global untuk Streamlit UI (Font Poppins & Rapi)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
@@ -22,7 +22,6 @@ st.markdown("""
         background-color: #f4f4f7;
     }
 
-    /* Styling Teks & Font Poppins */
     html, body, [class*="st-"] {
         font-family: 'Poppins', sans-serif !important;
     }
@@ -51,34 +50,31 @@ st.markdown("""
         font-weight: 400;
     }
 
-    /* Penyesuaian Lebar Input Password agar Pendek & Center */
-    [data-testid="stTextInput"] {
-        width: 280px !important;
+    /* Menyamakan Lebar Kotak Password dan Tombol (Proporsional) */
+    [data-testid="stTextInput"], [data-testid="stButton"] {
+        width: 320px !important;
         margin: 0 auto;
     }
 
-    /* Penyesuaian Lebar Tombol agar Pendek & Center */
-    [data-testid="stButton"] {
-        width: 280px !important;
-        margin: 0 auto;
-        padding-top: 10px;
-    }
-
+    /* Styling Tombol Login agar Elegan */
     div.stButton > button:first-child {
         background-color: #EE4D2D;
         color: white;
         border-radius: 12px;
         width: 100%;
         border: none;
-        height: 48px;
+        height: 52px;
         font-weight: 600;
+        font-size: 16px;
         font-family: 'Poppins', sans-serif;
-        transition: 0.3s;
+        transition: all 0.3s ease;
+        margin-top: 5px;
     }
     
     div.stButton > button:hover {
         background-color: #d73211;
-        box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
+        box-shadow: 0 6px 15px rgba(238, 77, 45, 0.25);
+        transform: translateY(-1px);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -88,15 +84,13 @@ if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
 if not st.session_state['authenticated']:
-    # Tampilan Halaman Login Rapi & Profesional
     st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
     st.markdown('<div class="login-header">Hitung Cerdas untuk<br>Jualan Berkualitas</div>', unsafe_allow_html=True)
     st.markdown('<div class="login-sub">Silakan masukkan kata sandi akses premium</div>', unsafe_allow_html=True)
     
-    # Input password pendek di tengah
     password = st.text_input("Password", type="password", placeholder="Kata Sandi", label_visibility="collapsed")
     
-    if st.button("Buka Kalkulator"):
+    if st.button("Buka Kalkulator Sekarang"):
         if password == "cuan2025":
             st.session_state['authenticated'] = True
             st.rerun()
@@ -106,7 +100,7 @@ if not st.session_state['authenticated']:
     st.markdown('</div>', unsafe_allow_html=True)
     st.stop() 
 
-# 4. KODE HTML UTAMA (Hanya tampil jika sudah login)
+# 4. KODE HTML UTAMA (Kalkulator & 5 Strategi)
 html_code = """
 <!DOCTYPE html>
 <html lang="id">
@@ -129,7 +123,7 @@ html_code = """
         
         .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); margin-top: 10px; }
         
-        .result-area { display: none; margin-top: 25px; animation: fadeIn 0.5s; }
+        .result-area { display: none; margin-top: 25px; animation: fadeIn 0.5s forwards; }
         .price-tag { text-align: center; background: #fff9f0; padding: 20px; border-radius: 18px; margin-bottom: 20px; border: 2px solid #ffe8cc; }
         .suggested-price { display: block; font-size: 34px; font-weight: 800; color: var(--shopee-orange); }
         
@@ -137,11 +131,12 @@ html_code = """
         .fee-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #555; }
         .total-cuan { color: var(--success); font-size: 15px; font-weight: 800; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
         
+        .strategy-title { font-size: 14px; font-weight: 800; color: #444; margin-bottom: 15px; display: block; }
         .strategy-card { background: #fff; border: 1px solid #f0f0f0; border-left: 5px solid var(--shopee-orange); padding: 15px; border-radius: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
         .strat-icon { font-size: 20px; }
         .strat-text strong { color: var(--dark); display: block; margin-bottom: 2px; font-size: 14px; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -203,6 +198,8 @@ html_code = """
                     <span>NET PROFIT:</span> <span id="resCuan"></span>
                 </div>
             </div>
+            
+            <span class="strategy-title">🚀 5 STRATEGI PENJUALAN UNTUK ANDA:</span>
             <div id="strategyContainer"></div>
         </div>
     </div>
@@ -248,14 +245,22 @@ html_code = """
         document.getElementById('resVoucherValue').innerText = "-Rp " + Math.round(valVch).toLocaleString('id-ID');
         document.getElementById('resCuan').innerText = "Rp " + Math.round(netCuan).toLocaleString('id-ID');
 
+        // DAFTAR 5 STRATEGI LENGKAP
         const strategies = [
-            { i: "🎯", t: "Targeting Affiliate", d: "Aktifkan komisi minimal 1% untuk menarik minat para kolaborator affiliate." },
-            { i: "🏷️", t: "Harga Coret", d: "Tampilkan harga Rp " + (Math.ceil((jual * 1.25)/100)*100).toLocaleString('id-ID') + " sebagai pemicu diskon." }
+            { i: "🎯", t: "Skema Affiliate", d: "Tawarkan komisi tambahan 1-3% khusus untuk Top Creator agar produk Anda direview dan viral lebih cepat." },
+            { i: "🏷️", t: "Psikologi Harga Coret", d: "Gunakan fitur diskon seller untuk mencoret harga Rp " + (Math.ceil((jual * 1.3)/100)*100).toLocaleString('id-ID') + " ke harga hitungan ini." },
+            { i: "📦", t: "Kombo Hemat", d: "Karena biaya proses flat Rp 1.250, buatlah paket beli 2 diskon 2% untuk memaksimalkan profit per resi." },
+            { i: "⚡", t: "Flash Sale Internal", d: "Gunakan harga ini sebagai harga 'Flash Sale Toko' di jam sibuk (12.00 / 20.00) untuk memicu impulse buying." },
+            { i: "🔥", t: "Voucher Ikuti Toko", d: "Berikan voucher khusus Rp 2.000 untuk pengikut baru guna membangun database pelanggan jangka panjang." }
         ];
 
         let stratHtml = "";
         strategies.forEach(s => { 
-            stratHtml += `<div class="strategy-card"><div class="strat-icon">${s.i}</div><div class="strat-text"><strong>${s.t}</strong>${s.d}</div></div>`; 
+            stratHtml += `
+            <div class="strategy-card">
+                <div class="strat-icon">${s.i}</div>
+                <div class="strat-text"><strong>${s.t}</strong>${s.d}</div>
+            </div>`; 
         });
         document.getElementById('strategyContainer').innerHTML = stratHtml;
     }
@@ -264,4 +269,4 @@ html_code = """
 </html>
 """
 
-components.html(html_code, height=1550, scrolling=True)
+components.html(html_code, height=1700, scrolling=True)
