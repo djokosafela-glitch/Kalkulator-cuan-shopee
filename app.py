@@ -8,60 +8,77 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. CSS Global untuk Streamlit UI (Hapus elemen standar & styling Login)
+# 2. CSS Global untuk Streamlit UI (Fokus pada Poppins & Desain Profesional)
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
     header {visibility: hidden !important;}
     #MainMenu {visibility: hidden !important;}
     footer {visibility: hidden !important;}
+    
     .block-container {
-        padding-top: 2rem !important;
-        padding-bottom: 0rem !important;
-    }
-    .stApp {
+        padding-top: 5rem !important;
         background-color: #f4f4f7;
     }
-    
-    /* Animasi Muncul dari Bawah */
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(50px); }
-        to { opacity: 1; transform: translateY(0); }
+
+    /* Styling Teks & Font Poppins */
+    html, body, [class*="st-"] {
+        font-family: 'Poppins', sans-serif !important;
     }
     
-    .login-container {
-        animation: slideUp 0.8s ease-out;
+    .login-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        padding: 40px;
-        background: white;
-        border-radius: 30px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        margin-top: 50px;
+        width: 100%;
     }
     
     .login-header {
-        font-family: 'Inter', sans-serif;
         font-weight: 800;
-        font-size: 28px;
+        font-size: 32px;
         color: #EE4D2D;
-        margin-bottom: 10px;
-        line-height: 1.2;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
     }
     
     .login-sub {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 30px;
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 35px;
+        font-weight: 400;
     }
 
-    /* Styling tombol login streamlit agar senada */
+    /* Penyesuaian Lebar Input Password agar Pendek & Center */
+    [data-testid="stTextInput"] {
+        width: 280px !important;
+        margin: 0 auto;
+    }
+
+    /* Penyesuaian Lebar Tombol agar Pendek & Center */
+    [data-testid="stButton"] {
+        width: 280px !important;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
     div.stButton > button:first-child {
         background-color: #EE4D2D;
         color: white;
         border-radius: 12px;
         width: 100%;
         border: none;
-        height: 50px;
-        font-weight: 700;
+        height: 48px;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+        transition: 0.3s;
+    }
+    
+    div.stButton > button:hover {
+        background-color: #d73211;
+        box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -71,22 +88,23 @@ if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
 if not st.session_state['authenticated']:
-    # Tampilan Halaman Login
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    # Tampilan Halaman Login Rapi & Profesional
+    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
     st.markdown('<div class="login-header">Hitung Cerdas untuk<br>Jualan Berkualitas</div>', unsafe_allow_html=True)
-    st.markdown('<div class="login-sub">Masukkan kata sandi akses premium Anda</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-sub">Silakan masukkan kata sandi akses premium</div>', unsafe_allow_html=True)
     
-    password = st.text_input("Kata Sandi", type="password", placeholder="Ketik di sini...", label_visibility="collapsed")
+    # Input password pendek di tengah
+    password = st.text_input("Password", type="password", placeholder="Kata Sandi", label_visibility="collapsed")
     
-    if st.button("Masuk Sekarang"):
+    if st.button("Buka Kalkulator"):
         if password == "cuan2025":
             st.session_state['authenticated'] = True
             st.rerun()
         else:
-            st.error("Kata sandi salah. Silakan coba lagi.")
+            st.error("Akses ditolak. Kata sandi salah.")
     
     st.markdown('</div>', unsafe_allow_html=True)
-    st.stop() # Hentikan eksekusi kode di bawah jika belum login
+    st.stop() 
 
 # 4. KODE HTML UTAMA (Hanya tampil jika sudah login)
 html_code = """
@@ -96,43 +114,42 @@ html_code = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
         :root { --shopee-orange: #EE4D2D; --bg: #f4f4f7; --success: #26aa99; --dark: #333; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 15px; margin: 0; }
-        .card { background: white; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; animation: fadeIn 0.5s ease-out; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 15px; margin: 0; }
+        .card { background: white; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: linear-gradient(135deg, #f53d2d, #ff6433); color: white; padding: 30px 20px; text-align: center; }
         .content { padding: 25px; }
         
         .grid-input { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        label { display: block; font-size: 11px; font-weight: 800; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+        label { display: block; font-size: 11px; font-weight: 700; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
         
-        input, select { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 14px; font-size: 14px; box-sizing: border-box; transition: 0.3s; font-weight: 600; margin-bottom: 15px; }
+        input, select { width: 100%; padding: 14px; border: 2px solid #eee; border-radius: 14px; font-size: 14px; box-sizing: border-box; transition: 0.3s; font-weight: 600; margin-bottom: 15px; font-family: 'Poppins', sans-serif; }
         input:focus { border-color: var(--shopee-orange); outline: none; background: #fffaf9; }
         
-        .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); margin-top: 10px; }
+        .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); margin-top: 10px; }
         
         .result-area { display: none; margin-top: 25px; animation: fadeIn 0.5s; }
         .price-tag { text-align: center; background: #fff9f0; padding: 20px; border-radius: 18px; margin-bottom: 20px; border: 2px solid #ffe8cc; }
-        .suggested-price { display: block; font-size: 36px; font-weight: 800; color: var(--shopee-orange); }
+        .suggested-price { display: block; font-size: 34px; font-weight: 800; color: var(--shopee-orange); }
         
         .fee-breakdown { font-size: 12px; background: #fafafa; padding: 18px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 25px; }
-        .fee-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #555; font-weight: 500; }
+        .fee-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #555; }
         .total-cuan { color: var(--success); font-size: 15px; font-weight: 800; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
         
-        .strategy-section { border-top: 2px dashed #eee; padding-top: 20px; }
-        .strategy-card { background: #fff; border: 1px solid #f0f0f0; border-left: 5px solid var(--shopee-orange); padding: 15px; border-radius: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .strategy-card { background: #fff; border: 1px solid #f0f0f0; border-left: 5px solid var(--shopee-orange); padding: 15px; border-radius: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; }
         .strat-icon { font-size: 20px; }
         .strat-text strong { color: var(--dark); display: block; margin-bottom: 2px; font-size: 14px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div class="header">
-        <h1 style="margin:0; font-size: 22px; letter-spacing: -0.5px;">Shopee Smart Pricing 2025</h1>
-        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9; font-weight: 600;">Akses Premium: Admin A-E & Affiliate Tax</p>
+        <h1 style="margin:0; font-size: 20px; font-weight: 800;">Shopee Pricing Assistant</h1>
+        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9;">Professional Profit Strategy 2025</p>
     </div>
 
     <div class="content">
@@ -151,15 +168,15 @@ html_code = """
         </div>
 
         <label>KOMISI AFFILIATE (%) <small style="color:red">*PPN 11% Otomatis</small></label>
-        <input type="number" id="affiliateRate" value="5" placeholder="Contoh: 5">
+        <input type="number" id="affiliateRate" value="5">
 
         <label>KATEGORI PRODUK (ADMIN)</label>
         <select id="kategori">
             <option value="0.08">Grup A (8.0%) - Fashion, Kecantikan, Aksesoris</option>
-            <option value="0.075">Grup B (7.5%) - Elektronik, Rumah Tangga, Otomotif</option>
-            <option value="0.06">Grup C (6.0%) - Kamera, Hobi, Olahraga, Mainan</option>
-            <option value="0.04">Grup D (4.0%) - Makanan, Minuman, Produk Bayi</option>
-            <option value="0.025">Grup E (2.5%) - Sembako, Susu Bayi, Produk Segar</option>
+            <option value="0.075">Grup B (7.5%) - Elektronik, Rumah Tangga</option>
+            <option value="0.06">Grup C (6.0%) - Kamera, Olahraga, Mainan</option>
+            <option value="0.04">Grup D (4.0%) - Makanan, Minuman, Bayi</option>
+            <option value="0.025">Grup E (2.5%) - Sembako, Produk Segar</option>
         </select>
 
         <label>PROGRAM PROMOSI SHOPEE</label>
@@ -169,7 +186,7 @@ html_code = """
             <option value="0">Tanpa Program XTRA (0%)</option>
         </select>
 
-        <button class="btn-main" onclick="hitungHarga()">REKOMENDASIKAN HARGA</button>
+        <button class="btn-main" onclick="hitungHarga()">HITUNG REKOMENDASI</button>
 
         <div id="resultArea" class="result-area">
             <div class="price-tag">
@@ -178,19 +195,15 @@ html_code = """
             </div>
 
             <div class="fee-breakdown">
-                <div class="fee-row"><span>Fee Admin & Program:</span> <span id="resAdminValue"></span></div>
+                <div class="fee-row"><span>Admin & Program:</span> <span id="resAdminValue"></span></div>
                 <div class="fee-row"><span>Affiliate + PPN 11%:</span> <span id="resAffValue"></span></div>
                 <div class="fee-row"><span>Alokasi Voucher:</span> <span id="resVoucherValue"></span></div>
-                <div class="fee-row"><span>Biaya Proses Fix:</span> <span>Rp 1.250</span></div>
+                <div class="fee-row"><span>Biaya Proses:</span> <span>Rp 1.250</span></div>
                 <div class="fee-row total-cuan">
                     <span>NET PROFIT:</span> <span id="resCuan"></span>
                 </div>
             </div>
-
-            <div class="strategy-section">
-                <label>🚀 STRATEGI OPTIMASI PENJUALAN:</label>
-                <div id="strategyContainer"></div>
-            </div>
+            <div id="strategyContainer"></div>
         </div>
     </div>
 </div>
@@ -236,25 +249,17 @@ html_code = """
         document.getElementById('resCuan').innerText = "Rp " + Math.round(netCuan).toLocaleString('id-ID');
 
         const strategies = [
-            { i: "🎯", t: "Targeting Affiliate", d: "Aktifkan 'Komisi Tambahan' minimal 1% di Shopee Affiliate agar produk diprioritaskan oleh para kolaborator." },
-            { i: "🏷️", t: "Psikologi Harga Coret", d: "Set harga coret di Seller Centre sebesar Rp " + (Math.ceil((jual * 1.25)/100)*100).toLocaleString('id-ID') + " untuk diskon 20% yang menarik mata." },
-            { i: "📦", t: "Efisiensi Biaya Fix", d: "Karena ada biaya fix Rp 1.250/order, dorong 'Kombo Hemat' agar pembeli beli lebih dari 1 barang per resi." },
-            { i: "⚡", t: "Flash Sale Internal", d: "Gunakan harga Rp " + jual.toLocaleString('id-ID') + " sebagai harga promosi Flash Sale Toko untuk menaikkan skor popularitas." },
-            { i: "🔍", t: "Optimasi Judul SEO", d: "Sertakan kata kunci volume tinggi dan fitur utama di 20 karakter pertama agar konversi klik (CTR) tinggi." }
+            { i: "🎯", t: "Targeting Affiliate", d: "Aktifkan komisi minimal 1% untuk menarik minat para kolaborator affiliate." },
+            { i: "🏷️", t: "Harga Coret", d: "Tampilkan harga Rp " + (Math.ceil((jual * 1.25)/100)*100).toLocaleString('id-ID') + " sebagai pemicu diskon." }
         ];
 
         let stratHtml = "";
         strategies.forEach(s => { 
-            stratHtml += `
-            <div class="strategy-card">
-                <div class="strat-icon">${s.i}</div>
-                <div class="strat-text"><strong>${s.t}</strong>${s.d}</div>
-            </div>`; 
+            stratHtml += `<div class="strategy-card"><div class="strat-icon">${s.i}</div><div class="strat-text"><strong>${s.t}</strong>${s.d}</div></div>`; 
         });
         document.getElementById('strategyContainer').innerHTML = stratHtml;
     }
 </script>
-
 </body>
 </html>
 """
