@@ -1,17 +1,42 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# 1. Konfigurasi Halaman (Judul & Ikon di Browser)
+# 1. Konfigurasi Halaman Dasar
 st.set_page_config(
     page_title="Shopee Smart Pricing Pro 2025", 
     page_icon="🧡", 
     layout="centered"
 )
 
-# 2. Judul di antarmuka Streamlit (Opsional, karena sudah ada di HTML)
-# st.title("Shopee Calculator App")
+# 2. CSS UNTUK MENGHILANGKAN ICON GITHUB & MENU STREAMLIT
+st.markdown("""
+    <style>
+    /* Menghilangkan Header (Termasuk Icon GitHub) */
+    header {visibility: hidden !important;}
+    
+    /* Menghilangkan Menu (Tiga Garis) di Kanan Atas */
+    #MainMenu {visibility: hidden !important;}
+    
+    /* Menghilangkan Footer "Made with Streamlit" */
+    footer {visibility: hidden !important;}
+    
+    /* Menyesuaikan jarak atas setelah header dihilangkan */
+    .block-container {
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+    }
 
-# 3. Masukkan Kode HTML, CSS, dan JS Anda ke dalam variabel
+    /* Menghilangkan dekorasi link GitHub pada gambar/elemen */
+    .viewerBadge_container__1QSob { display: none !important; }
+    
+    /* Background Body Streamlit agar selaras dengan HTML */
+    .stApp {
+        background-color: #f4f4f7;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 3. KODE HTML UTAMA (Sesuai Versi Anda)
 html_code = """
 <!DOCTYPE html>
 <html lang="id">
@@ -149,5 +174,5 @@ html_code = """
 </html>
 """
 
-# 4. Tampilkan HTML di Streamlit
-components.html(html_code, height=1200, scrolling=True)
+# 4. Tampilkan Komponen HTML
+components.html(html_code, height=1400, scrolling=True)
