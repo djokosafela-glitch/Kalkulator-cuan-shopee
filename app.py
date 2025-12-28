@@ -8,23 +8,87 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. CSS UNTUK MENGHILANGKAN ELEMEN STREAMLIT & DEKORASI
+# 2. CSS Global untuk Streamlit UI (Hapus elemen standar & styling Login)
 st.markdown("""
     <style>
     header {visibility: hidden !important;}
     #MainMenu {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     .block-container {
-        padding-top: 0rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 0rem !important;
     }
     .stApp {
         background-color: #f4f4f7;
     }
+    
+    /* Animasi Muncul dari Bawah */
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .login-container {
+        animation: slideUp 0.8s ease-out;
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-top: 50px;
+    }
+    
+    .login-header {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: 28px;
+        color: #EE4D2D;
+        margin-bottom: 10px;
+        line-height: 1.2;
+    }
+    
+    .login-sub {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    /* Styling tombol login streamlit agar senada */
+    div.stButton > button:first-child {
+        background-color: #EE4D2D;
+        color: white;
+        border-radius: 12px;
+        width: 100%;
+        border: none;
+        height: 50px;
+        font-weight: 700;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. KODE HTML UTAMA DENGAN LOGIKA 2025
+# 3. Logika Autentikasi
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+
+if not st.session_state['authenticated']:
+    # Tampilan Halaman Login
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    st.markdown('<div class="login-header">Hitung Cerdas untuk<br>Jualan Berkualitas</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-sub">Masukkan kata sandi akses premium Anda</div>', unsafe_allow_html=True)
+    
+    password = st.text_input("Kata Sandi", type="password", placeholder="Ketik di sini...", label_visibility="collapsed")
+    
+    if st.button("Masuk Sekarang"):
+        if password == "cuan2025":
+            st.session_state['authenticated'] = True
+            st.rerun()
+        else:
+            st.error("Kata sandi salah. Silakan coba lagi.")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.stop() # Hentikan eksekusi kode di bawah jika belum login
+
+# 4. KODE HTML UTAMA (Hanya tampil jika sudah login)
 html_code = """
 <!DOCTYPE html>
 <html lang="id">
@@ -35,7 +99,7 @@ html_code = """
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         :root { --shopee-orange: #EE4D2D; --bg: #f4f4f7; --success: #26aa99; --dark: #333; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 15px; margin: 0; }
-        .card { background: white; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; }
+        .card { background: white; width: 100%; max-width: 500px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; animation: fadeIn 0.5s ease-out; }
         .header { background: linear-gradient(135deg, #f53d2d, #ff6433); color: white; padding: 30px 20px; text-align: center; }
         .content { padding: 25px; }
         
@@ -46,8 +110,7 @@ html_code = """
         input:focus { border-color: var(--shopee-orange); outline: none; background: #fffaf9; }
         
         .btn-main { width: 100%; background: var(--shopee-orange); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); margin-top: 10px; }
-        .btn-main:hover { background: #d73211; }
-
+        
         .result-area { display: none; margin-top: 25px; animation: fadeIn 0.5s; }
         .price-tag { text-align: center; background: #fff9f0; padding: 20px; border-radius: 18px; margin-bottom: 20px; border: 2px solid #ffe8cc; }
         .suggested-price { display: block; font-size: 36px; font-weight: 800; color: var(--shopee-orange); }
@@ -61,7 +124,7 @@ html_code = """
         .strat-icon { font-size: 20px; }
         .strat-text strong { color: var(--dark); display: block; margin-bottom: 2px; font-size: 14px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -69,7 +132,7 @@ html_code = """
 <div class="card">
     <div class="header">
         <h1 style="margin:0; font-size: 22px; letter-spacing: -0.5px;">Shopee Smart Pricing 2025</h1>
-        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9; font-weight: 600;">Full Feature: Admin A-E & Affiliate Tax</p>
+        <p style="margin:5px 0 0; font-size: 11px; opacity: 0.9; font-weight: 600;">Akses Premium: Admin A-E & Affiliate Tax</p>
     </div>
 
     <div class="content">
@@ -153,14 +216,12 @@ html_code = """
         
         if (hpp <= 0) return alert("Masukkan HPP Produk!");
 
-        // 2025 Affiliate Policy: Komisi + PPN 11% dari Komisi tersebut
         const effectiveAffRate = affPct * 1.11;
         const totalTaxRate = katPct + progPct + vchPct + effectiveAffRate;
         const fixFee = 1250;
 
-        // Formula: Jual = (HPP + Profit_Rp + FixFee) / (1 - Total_Tax_Rate)
         let jual = (hpp + (hpp * profitPct) + fixFee) / (1 - totalTaxRate);
-        jual = Math.ceil(jual / 100) * 100; // Round up to nearest 100
+        jual = Math.ceil(jual / 100) * 100;
 
         const valAdmin = jual * (katPct + progPct);
         const valAff = jual * effectiveAffRate;
@@ -198,5 +259,4 @@ html_code = """
 </html>
 """
 
-# 4. Tampilkan Komponen HTML
 components.html(html_code, height=1550, scrolling=True)
